@@ -1,0 +1,56 @@
+name: webgoat-evidencias
+
+# Orquestación completa de la actividad:
+#   1. Construye WebGoat desde el código de la carpeta padre (..).
+#   2. Ejecuta las 4 pruebas negativas con los controles activos.
+#   3. Repite la ejecución quitando cada control (parches en scripts/patches).
+#   4. Genera tráfico con Playwright a través del proxy ZAP y exporta las alertas.
+#
+# Uso:
+#   cd evidencias
+#   docker compose up --build
+#
+# Resultados: evidencias/resultados/
+services:
+  zap:
+    image: zaproxy/zap-stable
+    entrypoint: ["zap.sh"]
+    command:
+      - "-daemon"
+      - "-host"
+      - "0.0.0.0"
+      - "-port"
+      - "8090"
+      - "-config"
+      - "api.disablekey=true"
+      - "-config"
+      - "api.addrs.addr.name=.*"
+      - "-config"
+      - "api.addrs.addr.regex=true"
+    ports:
+      # 8090 en el host: el puerto 8080 lo ocupa WebGoat, tal como pide el enunciado.
+      - "8090:8090"
+
+  runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.runner
+    depends_on:
+      - zap
+    environment:
+      PROJECT_DIR: /proyecto
+      RESULTS_DIR: /resultados
+      APP_PORT: "8080"
+      ZAP_URL: http://zap:8090
+      WEBGOAT_URL: http://runner:8080/WebGoat
+      HOST_UID: "${HOST_UID:-1000}"
+      HOST_GID: "${HOST_GID:-1000}"
+    volumes:
+      - ..:/proyecto
+      - ./resultados:/resultados
+      - maven-cache:/root/.m2
+    ports:
+      - "8080:8080"
+
+volumes:
+  maven-cache:

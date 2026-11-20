@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java b/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java
+index 6877c85f..4dce199b 100644
+--- a/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java
++++ b/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java
+@@ -53,7 +53,7 @@ public class WebSecurityConfig {
+                     .requestMatchers("/service/admin/**")
+                     .hasAuthority("WEBGOAT_ADMIN")
+                     .anyRequest()
+-                    .authenticated())
++                    .permitAll())
+         .formLogin(
+             login ->
+                 login

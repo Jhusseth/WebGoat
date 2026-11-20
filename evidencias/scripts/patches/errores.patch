@@ -1,0 +1,15 @@
+diff --git a/src/main/java/org/owasp/webgoat/container/users/AdminController.java b/src/main/java/org/owasp/webgoat/container/users/AdminController.java
+index 64b45150..1b78093c 100644
+--- a/src/main/java/org/owasp/webgoat/container/users/AdminController.java
++++ b/src/main/java/org/owasp/webgoat/container/users/AdminController.java
+@@ -90,10 +90,6 @@ public class AdminController {
+             .findFirst()
+             .orElse(null);
+ 
+-    if (user == null) {
+-      return ResponseEntity.notFound().build();
+-    }
+-
+     UserProgress progress = userProgressRepository.findByUser(username);
+ 
+     // Group lessons by Category and calculate per-category progress

@@ -1,0 +1,14 @@
+diff --git a/src/main/java/org/owasp/webgoat/container/users/RegistrationController.java b/src/main/java/org/owasp/webgoat/container/users/RegistrationController.java
+index dcb622f3..202994bf 100644
+--- a/src/main/java/org/owasp/webgoat/container/users/RegistrationController.java
++++ b/src/main/java/org/owasp/webgoat/container/users/RegistrationController.java
+@@ -40,7 +40,8 @@ public class RegistrationController {
+       HttpServletRequest request,
+       HttpServletResponse response)
+       throws ServletException {
+-    userValidator.validate(userForm, bindingResult);
++    // Control de validacion desactivado para la demostracion.
++    // userValidator.validate(userForm, bindingResult);
+ 
+     if (bindingResult.hasErrors()) {
+       return "registration";

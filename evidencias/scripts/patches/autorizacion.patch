@@ -1,0 +1,41 @@
+diff --git a/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java b/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java
+index 6877c85f..467a949b 100644
+--- a/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java
++++ b/src/main/java/org/owasp/webgoat/container/WebSecurityConfig.java
+@@ -51,7 +51,7 @@ public class WebSecurityConfig {
+                     .permitAll()
+                     // Administration endpoints: restricted to WEBGOAT_ADMIN only.
+                     .requestMatchers("/service/admin/**")
+-                    .hasAuthority("WEBGOAT_ADMIN")
++                    .permitAll()
+                     .anyRequest()
+                     .authenticated())
+         .formLogin(
+diff --git a/src/main/java/org/owasp/webgoat/container/users/AdminController.java b/src/main/java/org/owasp/webgoat/container/users/AdminController.java
+index 64b45150..fc0ca82c 100644
+--- a/src/main/java/org/owasp/webgoat/container/users/AdminController.java
++++ b/src/main/java/org/owasp/webgoat/container/users/AdminController.java
+@@ -53,7 +53,6 @@ public class AdminController {
+    * solved, total lessons, total assignments).
+    */
+   @GetMapping("/users")
+-  @PreAuthorize("hasAuthority('WEBGOAT_ADMIN')")
+   public List<UserSummary> listUsers() {
+     int totalLessons = course.getTotalOfLessons();
+     int totalAssignments = course.getTotalOfAssignments();
+@@ -82,7 +81,6 @@ public class AdminController {
+    * lesson name, whether it is solved, and the number of attempts.
+    */
+   @GetMapping("/users/{username}")
+-  @PreAuthorize("hasAuthority('WEBGOAT_ADMIN')")
+   public ResponseEntity<UserDetail> userDetail(@PathVariable String username) {
+     WebGoatUser user =
+         userService.getAllUsers().stream()
+@@ -157,7 +155,6 @@ public class AdminController {
+    * application exists solely to demonstrate vulnerabilities in a controlled environment.
+    */
+   @PostMapping("/users/{username}/reset-password")
+-  @PreAuthorize("hasAuthority('WEBGOAT_ADMIN')")
+   public ResponseEntity<PasswordResetResponse> resetPassword(@PathVariable String username) {
+     String tempPassword = generateTemporaryPassword();
+     try {

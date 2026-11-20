@@ -1,0 +1,27 @@
+FROM eclipse-temurin:25-jdk-noble
+
+# Herramientas base: git para aplicar/revertir los parches, curl para las esperas,
+# node para Playwright (el mismo motor de navegador que ya usa el proyecto).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs
+
+# Playwright 1.62.0: misma versión que usa el proyecto para sus pruebas de UI.
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+WORKDIR /opt/trafico
+RUN npm init -y >/dev/null \
+    && npm install --no-audit --no-fund playwright@1.62.0 \
+    && npx playwright install --with-deps chromium \
+    && rm -rf /var/lib/apt/lists/*
+COPY scripts/zap-traffic.js /opt/trafico/zap-traffic.js
+
+COPY scripts/ /opt/scripts/
+RUN chmod +x /opt/scripts/*.sh
+
+WORKDIR /proyecto
+ENTRYPOINT ["/opt/scripts/run-all.sh"]
