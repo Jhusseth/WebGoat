@@ -8,7 +8,7 @@ name: webgoat-evidencias
 #
 # Uso:
 #   cd evidencias
-#   docker compose up --build
+#   ./ejecutar.sh
 #
 # Resultados: evidencias/resultados/
 services:

@@ -27,7 +27,7 @@ profesor quiere verlo desde cero, no necesita instalar Maven, Java ni ZAP.
 
 ```bash
 cd evidencias
-docker compose up --build
+./ejecutar.sh
 ```
 
 Al terminar, los resultados quedan en `resultados/`:

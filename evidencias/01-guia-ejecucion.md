@@ -18,9 +18,15 @@ No hace falta tener Java, Maven ni ZAP instalados: todo va dentro de los contene
 2. Levanta el flujo completo:
 
    ```bash
-   docker compose up --build
+   ./ejecutar.sh
    ```
+
+   Ese script hace `docker compose up --build` y apaga ZAP cuando el runner termina,
+   para que no quede nada corriendo. Si prefieres hacerlo a mano, el comando equivalente
+   es `docker compose up --build --abort-on-container-exit --exit-code-from runner`.
+
 3. Espera. El proceso hace esto, en orden:
+
    - compila WebGoat desde la carpeta del proyecto (`..`, montada como `/proyecto`);
    - arranca ZAP en modo daemon en el puerto **8090** (el 8080 lo usa WebGoat);
    - arranca WebGoat y corre las cuatro pruebas negativas (deben pasar todas);
