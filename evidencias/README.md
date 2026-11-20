@@ -40,4 +40,4 @@ Al terminar, los resultados quedan en `resultados/`:
 ## Commit de las pruebas
 
 Las pruebas viven en `src/it/java/org/owasp/webgoat/integration/NegativeSecurityIntegrationTest.java`.
-El commit de esta entrega es: `PENDIENTE_COMPLETAR`.
+El commit de esta entrega es `cbb4dbf` (`test: add negative security tests and evidence bundle`).
